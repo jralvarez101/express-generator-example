@@ -6,8 +6,8 @@ const authenticate = require('../authenticate');
 const router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/',authenticate.verifyUser,authenticate.verifyAdmin, function(req, res, next) {
+  res.send(req.user);
 });
 
 router.post('/signup', (req, res) => {
@@ -22,6 +22,9 @@ router.post('/signup', (req, res) => {
           } else {
               if (req.body.firstname) {
                   user.firstname = req.body.firstname;
+              }
+              if (req.body.admin) {
+                user.admin = req.body.admin;
               }
               if (req.body.lastname) {
                   user.lastname = req.body.lastname;
